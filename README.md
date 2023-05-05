@@ -1,6 +1,6 @@
 # Auto Glow
 
-Auto Glow is a C++ application that uses Windows GDI API and low bitmap handling to automatically adjust the screen brightness when switching between light and dark-themed applications.
+Auto Glow is a C++ application that uses Windows GDI API and low-level bitmap handling to automatically adjust the screen brightness when switching between light and dark-themed applications.
 
 The app maintains the average luminance of the screen constant by adjusting the overall brightness. This provides a comfortable viewing experience and reduces eye strain.
 
