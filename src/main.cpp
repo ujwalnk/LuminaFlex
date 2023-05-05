@@ -1,3 +1,9 @@
+/**
+ * Author: Ujwal N K
+ * Created On: 18 Apr, 2023
+ * main Module for AutoGlow
+**/
+
 #include <iostream>
 #include <Windows.h>
 

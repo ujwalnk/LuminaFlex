@@ -1,3 +1,9 @@
+/**
+ * Author: Ujwal N K
+ * Created On: 05 May, 2023
+ * Get BitMap Image of the Screen & Calculate Luminesce 
+**/
+
 #include <Windows.h>
 #include <stdint.h>
 
