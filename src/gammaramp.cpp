@@ -7,7 +7,7 @@
  * Change the brightness of the screen using GammaRamp API
  */
 
-#include "gammaramp.h"
+#include "gammaRamp.h"
 #include <windows.h>
 
 #pragma comment(lib, "gdi32.lib")

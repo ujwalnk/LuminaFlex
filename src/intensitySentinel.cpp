@@ -4,10 +4,12 @@
  * Get BitMap Image of the Screen & Calculate Luminesce 
 **/
 
+#include "intensitySentinel.h"
+
 #include <Windows.h>
 #include <stdint.h>
-
 #include <iostream>
+
 
 static int width;
 static int height;
@@ -15,7 +17,7 @@ static int height;
 /**
  * Get the device context and dimensions of the primary display
  **/
-void getScreenDimensions(HDC &hScreen) {
+void IntensitySentinel::getScreenDimensions(HDC &hScreen) {
   hScreen = GetDC(NULL);
   width = GetDeviceCaps(hScreen, HORZRES);
   height = GetDeviceCaps(hScreen, VERTRES);
@@ -24,7 +26,7 @@ void getScreenDimensions(HDC &hScreen) {
 /**
  * Create compatible device context and bitmap for screen
  **/
-HBITMAP createCompatibleScreenBitmap(HDC &hScreen, HDC &hDC) {
+HBITMAP IntensitySentinel::createCompatibleScreenBitmap(HDC &hScreen, HDC &hDC) {
   // Create bitmap for the screen
   HBITMAP hBitmap = CreateCompatibleBitmap(hScreen, width, height);
   hDC = CreateCompatibleDC(hScreen);
@@ -41,7 +43,7 @@ HBITMAP createCompatibleScreenBitmap(HDC &hScreen, HDC &hDC) {
 /**
  * Retrieve the bitmap data for specified bitmap
  **/
-bool getBitmapData(HDC &hDC, HBITMAP &hBitmap, BITMAPINFO &bmi,
+bool IntensitySentinel::getBitmapData(HDC &hDC, HBITMAP &hBitmap, BITMAPINFO &bmi,
                    uint8_t *&data) {
   // Get Bitmap info
   if (GetDIBits(hDC, hBitmap, 0, bmi.bmiHeader.biHeight, NULL, &bmi,
@@ -63,7 +65,7 @@ bool getBitmapData(HDC &hDC, HBITMAP &hBitmap, BITMAPINFO &bmi,
 /**
  * Calculate the luminance of a single pixel using the Rec. 709 formula
  **/
-double calculatePixelLuminance(uint8_t *pixel) {
+double IntensitySentinel::calculatePixelLuminance(uint8_t *pixel) {
   uint8_t r = *(pixel + 2);
   uint8_t g = *(pixel + 1);
   uint8_t b = *pixel;
@@ -73,7 +75,7 @@ double calculatePixelLuminance(uint8_t *pixel) {
 /**
  * Set Bitmap image parameters
  */
-void setBitmapInfo(BITMAPINFO &bmi) {
+void IntensitySentinel::setBitmapInfo(BITMAPINFO &bmi) {
   bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
   bmi.bmiHeader.biWidth = width;
   bmi.bmiHeader.biHeight = -height;  // inverted bitmap
@@ -86,7 +88,7 @@ void setBitmapInfo(BITMAPINFO &bmi) {
 /**
  * Calculate average luminance of entire screen
  **/
-double getScreenLuminance() {
+double IntensitySentinel::getIntensity() {
   HDC hScreen, hDC;
   getScreenDimensions(hScreen);
   HBITMAP hBitmap = createCompatibleScreenBitmap(hScreen, hDC);

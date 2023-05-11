@@ -7,7 +7,7 @@
 #include <iostream>
 #include <Windows.h>
 
-#include "getScreenLuminance.h"
+#include "intensitySentinel.h"
 #include "gammaramp.h"
 
 #pragma comment(lib, "gdi32.lib")
@@ -21,9 +21,12 @@ int WINAPI WinMain(
   int nCmdShow              // show state
 ){
 	
-	cout << getScreenLuminance() << endl;
-	
 	CGammaRamp gammaRamp;
+	IntensitySentinel intensitySentinel;
+
+	cout << intensitySentinel.getIntensity() << endl;
+	
+	
 
 	// Make the screen darker
 	gammaRamp.SetBrightness(NULL, 64);
