@@ -1,10 +1,15 @@
 #include <iostream>
 #include <stdexcept>
 #include <stdio.h>
+#include <cstdlib>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
+/**
+ * Execute cmd in Windows Cmd
+*/
 string exec(const char* cmd) {
     char buffer[128];
     string result = "";
@@ -31,9 +36,22 @@ string exec(const char* cmd) {
 }
 
 int getBrightness(){
-    return stoi(exec("powershell -Command \"Get-Ciminstance -Namespace root/WMI -ClassName WmiMonitorBrightness | Select -ExpandProperty \"CurrentBrightness\"\""));
+    return atoi(exec("powershell -Command \"Get-Ciminstance -Namespace root/WMI -ClassName WmiMonitorBrightness | Select -ExpandProperty \"CurrentBrightness\"\"").c_str());
 }
 
 void setBrightness(int level){
-    exec("powershell (Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1," + level + ')');
+
+    /*char* command = "powershell (Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1,";
+    sprintf(command, "%d", level);
+    command = "powershell (Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1,"
+    ;
+    cout << command;
+*/
+
+
+    string commandString = "powershell (Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1,";
+    commandString += to_string(level);
+    commandString += ")";
+    cout << commandString << endl;
+    exec(commandString.c_str());
 }
