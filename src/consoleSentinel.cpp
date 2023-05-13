@@ -7,6 +7,8 @@
 
 #include "consoleSentinel.h"
 
+#pragma GCC optimize("Ofast")
+
 using namespace std;
 
 /**
@@ -25,9 +27,9 @@ string ConsoleSentinel::exec(const char* cmd) {
 
     // Read contents line by line & append to buffer, result
     try {
-    while (fgets(buffer, sizeof buffer, pipe) != NULL) {
-        result += buffer;
-    }
+        while (fgets(buffer, sizeof buffer, pipe) != NULL) {
+            result += buffer;
+        }
     } catch (...) {
         pclose(pipe);
         throw;

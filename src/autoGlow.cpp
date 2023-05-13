@@ -7,9 +7,12 @@
 #include <iostream>
 #include <Windows.h>
 
-#include "intensitySentinel.h"
+#include "consoleSentinel.h"
+#include "fileSentinel.h"
 #include "gammaramp.h"
+#include "intensitySentinel.h"
 
+#pragma GCC optimize("Ofast")
 #pragma comment(lib, "gdi32.lib")
 
 using namespace std;
@@ -22,22 +25,24 @@ int WINAPI WinMain(
 ){
 	
 	CGammaRamp gammaRamp;
-	IntensitySentinel intensitySentinel;
+	IntensitySentinel iSentinel;
+	ConsoleSentinel cSentinel;
+	FileSentinel fSentinel;
 
-	cout << intensitySentinel.getIntensity() << endl;
-	
-	
 
+	cout << iSentinel.getIntensity() << endl;
+	
 	// Make the screen darker
-	gammaRamp.SetBrightness(NULL, 64);
+	// gammaRamp.SetBrightness(NULL, 64);
 	
-	cout << "Set Brightness to 50%" << endl;
+	cSentinel.setBrightness(50);
+	cout << "Current Brightness" << cSentinel.getBrightness() << endl;
 
 	Sleep(3000);
 
 	// Return the screen brightness back to normal
 	cout << "Return to normal";
-	gammaRamp.SetBrightness(NULL, 128);
+	// gammaRamp.SetBrightness(NULL, 128);
 	
 	return 0;
 }

@@ -6,10 +6,11 @@
 
 #include "intensitySentinel.h"
 
-#include <Windows.h>
-#include <stdint.h>
 #include <iostream>
+#include <stdint.h>
+#include <Windows.h>
 
+#pragma GCC optimize("Ofast")
 
 static int width;
 static int height;
