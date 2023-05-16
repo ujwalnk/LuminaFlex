@@ -6,21 +6,20 @@
 #ifndef IntensitySentinel_h
 #define IntensitySentinel_h
 
-#include <stdint.h>
-#include <windows.h>
+	#include <stdint.h>
+	#include <windows.h>
 
-class IntensitySentinel {
- public:
-  double getIntensity();
-//   void setBrightness(int level);
+	class IntensitySentinel {
+		public:
+			double getIntensity();
+			void chgBrightness(bool useGammaRamp, int delta, float maxL, float minL);
 
- private:
-  double calculatePixelLuminance(uint8_t *pixel);
-  HBITMAP createCompatibleScreenBitmap(HDC &hScreen, HDC &hDC);
-  void getScreenDimensions(HDC &hScreen);
-  bool getBitmapData(HDC &hDC, HBITMAP &hBitmap, BITMAPINFO &bmi,
-                     uint8_t *&data);
-  void setBitmapInfo(BITMAPINFO &bmi);
-};
+		private:
+			double calculatePixelLuminance(uint8_t *pixel);
+			HBITMAP createCompatibleScreenBitmap(HDC &hScreen, HDC &hDC);
+			void getScreenDimensions(HDC &hScreen);
+			bool getBitmapData(HDC &hDC, HBITMAP &hBitmap, BITMAPINFO &bmi,uint8_t *&data);
+			void setBitmapInfo(BITMAPINFO &bmi);
+	};
 
 #endif

@@ -53,9 +53,9 @@ int ConsoleSentinel::getBrightness() {
 
 /**
  * Set system brightness
- * @param (int) level: Brightness level
+ * @param (float) level: Brightness level
 */
-void ConsoleSentinel::setBrightness(int level) {
+void ConsoleSentinel::setBrightness(float level) {
     stringstream ss;
     ss << "powershell (Get-WmiObject -Namespace root/WMI -Class "
         << "WmiMonitorBrightnessMethods).WmiSetBrightness(1," << level << ')';

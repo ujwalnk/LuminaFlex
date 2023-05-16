@@ -25,17 +25,24 @@ FileSentinel::FileSentinel(){
  * Read config file data into configData struct
 */
 void FileSentinel::readConfig(){
-	ifstream cFile(configFileName);
+	ifstream cFile(CONFIG_FILE_NAME);
 
 	if(cFile.good()){
 		// Check if the file exists and read from it
-		cFile >> data.maxBrightness;
-		cFile >> data.minBrightness;
+		cFile >> data.delta;
 		cFile >> data.useGammaRamp;
+		cFile >> data.maxLum;
+		cFile >> data.minLum;
 	} else{
-		// Create empty file if file not exists
+		// Create file with defaults if file not exists
 		cFile.close();
-		ofstream cFile(configFileName);
+		ofstream cFile(CONFIG_FILE_NAME);
+		
+		cFile << 0 << endl
+		      << false << endl
+			  << -1 << endl
+			  << -1 << endl;
+
 		cFile.close();
 	}
 
@@ -46,47 +53,70 @@ void FileSentinel::readConfig(){
  * Store the config data into file
 */
 void FileSentinel::writeConfig(){
-	ofstream cfile(configFileName);
-	cfile << data.maxBrightness << endl 
-		  << data.minBrightness << endl 
-		  << data.useGammaRamp << endl;
+	ofstream cfile(CONFIG_FILE_NAME);
+	cfile << data.delta << endl 
+		  << data.useGammaRamp << endl
+		  << data.maxLum << endl
+		  << data.minLum;
 
 	cfile.close();
 }
 
 /**
- * Get maxBrightness 
- * @return (int): Maximum Brightness
+ * Getter: delta
+ * @return (int): Delta
 */
-int FileSentinel::getMaxBrightness(){
-	return data.maxBrightness;
+int FileSentinel::getDelta(){
+	return data.delta;
 }
 
 /**
- * Get minBrightness 
- * @return (int): Minimum Brightness
+ * Getter: maxBrightness 
+ * @return (float): Maximum Brightness
 */
-int FileSentinel::getMinBrightness(){
-	return data.minBrightness;
+float FileSentinel::getMaxLum(){
+	return data.maxLum;
 }
 
 /**
- * Get userGammaRamp
+ * Getter: mixBrightness 
+ * @return (float): Minimum Brightness
+*/
+float FileSentinel::getMinLum(){
+	return data.minLum;
+}
+
+/**
+ * Getter: userGammaRamp
  * @return (bool): useGammaRamp
 */
 bool FileSentinel::getUseGammaRamp(){
 	return data.useGammaRamp;
 }
 
-
-void FileSentinel::setMaxBrightness(int level){
-	data.maxBrightness = level;
+/**
+ * Setter: Delta
+ * @param level(int): Delta Quantity
+*/
+void FileSentinel::setDelta(int level){
+	data.delta = level;
 }
 
-void FileSentinel::setMinBrightness(int level){
-	data.minBrightness = level;
+/**
+ * Setter: Min, Max Brightness
+ * @param max(float): Maximum Lum
+ * @param min(float): Minimum Lum
+*/
+void FileSentinel::setLum(float max, float min){
+	data.maxLum = max;
+	data.minLum = min;
+
 }
 
+/**
+ * Setter: useGammaRamp
+ * @param b(bool): true / false
+*/
 void FileSentinel::setUseGammaRamp(bool b){
 	data.useGammaRamp = b;
 }

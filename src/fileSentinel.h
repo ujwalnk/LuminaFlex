@@ -10,19 +10,16 @@
 		#include <stdbool.h>
 	#endif
 
-	#ifndef string
-		#include <string>
-	#endif
+	#define CONFIG_FILE_NAME ".config"
 
     class FileSentinel{
         private:
 
-			const std::string configFileName = ".config";
-
 			struct configData{
-				int maxBrightness = -1;
-				int minBrightness = -1;
+				int delta = 0;
 				bool useGammaRamp = false;
+				float maxLum = -1;
+				float minLum = -1;
 			} data;
 
             void readConfig();
@@ -30,12 +27,13 @@
         public:
 			FileSentinel();
 
-			int getMaxBrightness();
-			int getMinBrightness();
+			int getDelta();
+			float getMaxLum();
+			float getMinLum();
 			bool getUseGammaRamp();
 
-            void setMaxBrightness(int level);
-			void setMinBrightness(int level);
+			void setDelta(int level);
+			void setLum(float max, float min);
 			void setUseGammaRamp(bool b);            
     };
 

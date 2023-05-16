@@ -10,7 +10,7 @@
             std::string exec(const char* cmd);
         public:
             int getBrightness();
-            void setBrightness(int level);
+            void setBrightness(float level);
     };
 
 #endif
