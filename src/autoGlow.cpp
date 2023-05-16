@@ -5,11 +5,10 @@
 **/
 
 #include <iostream>
+#include <math.h>
 #include <Windows.h>
 
-#include "consoleSentinel.h"
 #include "fileSentinel.h"
-#include "gammaramp.h"
 #include "intensitySentinel.h"
 
 #pragma GCC optimize("Ofast")
@@ -23,26 +22,27 @@ int WINAPI WinMain(
   LPSTR lpCmdLine,          // command line
   int nCmdShow              // show state
 ){
-	
-	CGammaRamp gammaRamp;
-	IntensitySentinel iSentinel;
-	ConsoleSentinel cSentinel;
+	// Read, store necessary configurations & free memory
 	FileSentinel fSentinel;
 
+	// TODO: Check for change in window
 
-	cout << iSentinel.getIntensity() << endl;
-	
-	// Make the screen darker
-	// gammaRamp.SetBrightness(NULL, 64);
-	
-	cSentinel.setBrightness(50);
-	cout << "Current Brightness" << cSentinel.getBrightness() << endl;
+	// Read and change intensity
+	IntensitySentinel iSentinel;
 
 	Sleep(3000);
+	cout << iSentinel.getIntensity();
 
-	// Return the screen brightness back to normal
-	cout << "Return to normal";
-	// gammaRamp.SetBrightness(NULL, 128);
+	while(true){
+		int prevInt = iSentinel.getIntensity();
+		Sleep(3000);
+		int currInt = iSentinel.getIntensity();
+		cout << "Intensity: " << currInt << endl;
+
+		if(abs(currInt - prevInt) >= 10){
+			iSentinel.chgBrightness(fSentinel.getUseGammaRamp(), fSentinel.getDelta(), fSentinel.getMaxLum(), fSentinel.getMinLum());
+		}
+	}
 	
 	return 0;
 }
