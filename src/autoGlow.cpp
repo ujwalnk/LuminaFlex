@@ -9,12 +9,15 @@
 #include <Windows.h>
 
 #include "fileSentinel.h"
+#include "hookSentinel.h"
 #include "intensitySentinel.h"
 
 #pragma GCC optimize("Ofast")
 #pragma comment(lib, "gdi32.lib")
 
 using namespace std;
+
+MSG msg;
 
 int WINAPI WinMain(
   HINSTANCE hInstance,      // handle to current instance
@@ -30,10 +33,16 @@ int WINAPI WinMain(
 	// Read and change intensity
 	IntensitySentinel iSentinel;
 
+	// Setup the hook
+	SetHook();
+
 	Sleep(3000);
 	cout << iSentinel.getIntensity();
 
 	while(true){
+
+		GetMessage(&msg, NULL, 0, 0);
+
 		int prevInt = iSentinel.getIntensity();
 		Sleep(3000);
 		int currInt = iSentinel.getIntensity();
