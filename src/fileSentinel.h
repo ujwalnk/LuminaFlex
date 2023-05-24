@@ -17,9 +17,10 @@
 
 			struct configData{
 				int delta = 0;
-				bool useGammaRamp = false;
+				float interval = 5;
 				float maxLum = -1;
 				float minLum = -1;
+				bool useGammaRamp = false;
 			} data;
 
             void readConfig();
@@ -28,11 +29,13 @@
 			FileSentinel();
 
 			int getDelta();
+			float getInterval();
 			float getMaxLum();
 			float getMinLum();
 			bool getUseGammaRamp();
 
 			void setDelta(int level);
+			void setInterval(float interval);
 			void setLum(float max, float min);
 			void setUseGammaRamp(bool b);            
     };

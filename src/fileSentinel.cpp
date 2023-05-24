@@ -30,9 +30,10 @@ void FileSentinel::readConfig(){
 	if(cFile.good()){
 		// Check if the file exists and read from it
 		cFile >> data.delta;
-		cFile >> data.useGammaRamp;
+		cFile >> data.interval;
 		cFile >> data.maxLum;
 		cFile >> data.minLum;
+		cFile >> data.useGammaRamp;
 	} else{
 		// Create file with defaults if file not exists
 		cFile.close();
@@ -40,6 +41,7 @@ void FileSentinel::readConfig(){
 		
 		cFile << 0 << endl
 		      << false << endl
+			  << 5 << endl
 			  << -1 << endl
 			  << -1 << endl;
 
@@ -55,19 +57,28 @@ void FileSentinel::readConfig(){
 void FileSentinel::writeConfig(){
 	ofstream cfile(CONFIG_FILE_NAME);
 	cfile << data.delta << endl 
-		  << data.useGammaRamp << endl
+		  << data.interval << endl
 		  << data.maxLum << endl
-		  << data.minLum;
+		  << data.minLum << endl
+		  << data.useGammaRamp;
 
 	cfile.close();
 }
 
 /**
  * Getter: delta
- * @return (int): Delta
+ * @return (int): delta
 */
 int FileSentinel::getDelta(){
 	return data.delta;
+}
+
+/**
+ * Getter: interval
+ * @return (int): interval
+*/
+float FileSentinel::getInterval(){
+	return data.interval;
 }
 
 /**
@@ -103,6 +114,14 @@ void FileSentinel::setDelta(int level){
 }
 
 /**
+ * Setter: Interval
+ * @param interval(float): Interval Time
+*/
+void FileSentinel::setInterval(float interval){
+	data.interval = interval;
+}
+
+/**
  * Setter: Min, Max Brightness
  * @param max(float): Maximum Lum
  * @param min(float): Minimum Lum
@@ -110,7 +129,6 @@ void FileSentinel::setDelta(int level){
 void FileSentinel::setLum(float max, float min){
 	data.maxLum = max;
 	data.minLum = min;
-
 }
 
 /**
