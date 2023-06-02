@@ -1,19 +1,25 @@
 #include "MainForm.h"
 
+#include <iostream>
+#include <Windows.h>
+#include <PhysicalMonitorEnumerationAPI.h>
+#include <HighLevelMonitorConfigurationAPI.h>
 
 using namespace System;
 using namespace System::Windows::Forms;
 using namespace AutoGlow;
 
+bool SetBrightness(HANDLE monitorHandle, DWORD brightness);
+
 int main(array<String^>^ args) {
+
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 
 	AutoGlow::MainForm form;
 
 	Application::Run(% form);
-
-	return 0;
+	//return 0;
 }
 
 /**
@@ -62,4 +68,17 @@ void MainForm::MainForm_FormClosing(Object^ sender, FormClosingEventArgs^ e){
 		e->Cancel = true;
 		this->Hide();
 	}
+}
+bool SetBrightness(HANDLE monitorHandle, DWORD brightness)
+{
+	// Set the monitor's brightness using the Physical Monitor API
+	if (!SetMonitorBrightness(monitorHandle, brightness))
+	{
+		std::cout << "Failed to set monitor brightness." << std::endl;
+		return false;
+	}
+
+	std::cout << "Brightness set to: " << brightness << std::endl;
+
+	return true;
 }

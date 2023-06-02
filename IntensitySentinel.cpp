@@ -6,6 +6,7 @@
 
 #include "intensitySentinel.h"
 
+#include <gdiplus.h>
 #include <iostream>
 #include <stdint.h>
 #include <Windows.h>
@@ -13,7 +14,7 @@
 //#include "consoleSentinel.h"
 //#include "gammaRamp.h"
 
-#pragma GCC optimize("Ofast")
+//#pragma GCC optimize("Ofast")
 
 static int width;
 static int height;

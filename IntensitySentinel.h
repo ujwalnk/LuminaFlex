@@ -14,7 +14,7 @@
 class IntensitySentinel {
 public:
 	double getIntensity();
-	void chgBrightness(bool useGammaRamp, int delta, float maxL, float minL);
+	//void chgBrightness(bool useGammaRamp, int delta, float maxL, float minL);
 
 private:
 	double calculatePixelLuminance(uint8_t* pixel);

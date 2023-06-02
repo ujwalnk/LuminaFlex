@@ -1,8 +1,11 @@
 #pragma once
 
+#include "ConsoleSentinel.h"
 #include "FileSentinel.h"
-#include "gammaramp.h"
+#include "IntensitySentinel.h"
 
+#include <fstream>
+#include <iostream>
 #include <string>
 #include <cstring>
 
@@ -16,7 +19,8 @@ namespace AutoGlow {
 	using namespace System::Drawing;
 
 	FileSentinel fSentinel;
-	CGammaRamp gSentinel;
+	ConsoleSentinel cSentinel;
+	IntensitySentinel iSentinel;
 
 	/// <summary>
 	/// Summary for MainForm
@@ -28,6 +32,7 @@ namespace AutoGlow {
 		System::Windows::Forms::ContextMenuStrip^ trayMenu;
 
 	public:
+		String^ msgString;
 		MainForm(void)
 		{
 			InitializeComponent();
@@ -39,6 +44,8 @@ namespace AutoGlow {
 			InitializeTrayIcon();
 
 			this->FormClosing += gcnew FormClosingEventHandler(this, &MainForm::MainForm_FormClosing);
+
+			msgString += cSentinel.getBrightness();
 	
 		}
 
@@ -253,6 +260,7 @@ namespace AutoGlow {
 			this->Text = L"AutoGlow";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MainForm::MainForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
+			this->VisibleChanged += gcnew System::EventHandler(this, &MainForm::MainForm_VisibleChanged);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -273,15 +281,25 @@ namespace AutoGlow {
 			txtInterval->Text = fSentinel.getInterval().ToString();
 
 			// Set the Luminance measured
-			this->lblLum->Text = "{" + fSentinel.getMinLum().ToString() + ", " + fSentinel.getMaxLum().ToString() + "}";
+			this->lblLum->Text = fSentinel.getMinLum().ToString() + " : " + fSentinel.getMaxLum().ToString();
 
-			gSentinel.SetBrightness(NULL, fSentinel.getDelta());
-	
 		}
+
+		
 
 		private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		}
 
 
+		private: System::Void MainForm_VisibleChanged(System::Object^ sender, System::EventArgs^ e) {
+			if (this -> Visible) {
+				// TODO: Disable Working, when window open
+				// TODO: This code runs twice instead of once, fix that
+
+				std::ofstream logFile(".log", std::ios_base::app);
+				logFile << iSentinel.getIntensity() << std::endl;
+				logFile.close();
+			}
+		}
 };
 }

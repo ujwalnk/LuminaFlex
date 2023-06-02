@@ -21,7 +21,10 @@
     <ClCompile Include="FileSentinel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gammaRamp.cpp">
+    <ClCompile Include="ConsoleSentinel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensitySentinel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,7 +35,10 @@
     <ClInclude Include="FileSentinel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gammaramp.h">
+    <ClInclude Include="ConsoleSentinel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IntensitySentinel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

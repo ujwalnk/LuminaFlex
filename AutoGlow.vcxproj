@@ -81,7 +81,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>gdi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Dxva2.lib;gdi32.lib;gdiplus.lib;User32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
@@ -121,13 +121,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConsoleSentinel.cpp" />
     <ClCompile Include="FileSentinel.cpp" />
-    <ClCompile Include="gammaRamp.cpp" />
+    <ClCompile Include="IntensitySentinel.cpp" />
     <ClCompile Include="MainForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleSentinel.h" />
     <ClInclude Include="FileSentinel.h" />
-    <ClInclude Include="gammaramp.h" />
+    <ClInclude Include="IntensitySentinel.h" />
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
