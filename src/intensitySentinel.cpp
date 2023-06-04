@@ -6,6 +6,7 @@
 
 #include "intensitySentinel.h"
 
+#include <cmath>
 #include <iostream>
 #include <stdint.h>
 #include <Windows.h>
@@ -50,12 +51,17 @@ HBITMAP IntensitySentinel::createCompatibleScreenBitmap(HDC &hScreen, HDC &hDC) 
 }
 
 void IntensitySentinel::chgBrightness(bool useGammaRamp, int delta, float maxL, float minL){
-	std::cout << cSentinel.getBrightness();
 	
-	float deltaBrightness = map(getIntensity(), minL, maxL, -delta/2, delta/2);
-	cSentinel.setBrightness(cSentinel.getBrightness() - deltaBrightness);
+	int deltaBrightness = floor(map(getIntensity(), minL, maxL, -delta/2, delta/2));
+	if(useGammaRamp){
+		gammaRamp.SetBrightness(NULL, 128 - deltaBrightness);
+		std::cout << 128 - deltaBrightness << std::endl;
+	}else{
+		std::cout << cSentinel.getBrightness();
+		cSentinel.setBrightness(cSentinel.getBrightness() - deltaBrightness);
+		std::cout << " - " << deltaBrightness << " = " << cSentinel.getBrightness() << std::endl;
+	}
 	
-	std::cout << " - " << deltaBrightness << " = " << cSentinel.getBrightness() << std::endl;
 }
 
 /**
