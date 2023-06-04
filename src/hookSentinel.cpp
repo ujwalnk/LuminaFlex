@@ -7,59 +7,150 @@
 #include <iostream>
 #include <windows.h>
 
-#include "hookSentinel.h"
+HHOOK hShellHook;
 
-/* variable to store the HANDLE to the hook. Don't declare it anywhere else then globally
- or you will get problems since every function uses this variable. */
-HHOOK _hook;
-
-// This struct contains the data received by the hook callback. As you see in the callback function
-// it contains the thing you will need: vkCode = virtual key code.
-KBDLLHOOKSTRUCT kbdStruct;
-
-/** 
- * This is the callback function. Consider it the event that is raised when, in this case,  a key is pressed.
- */
-LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam){
-	if (nCode >= 0){
-		// the action is valid: HC_ACTION.
-		// if (wParam == WM_KEYDOWN){
-		// 	// lParam is the pointer to the struct containing the data needed, so cast and assign it to kdbStruct.
-		// 	kbdStruct = *((KBDLLHOOKSTRUCT*)lParam);
-		// 	// a key (non-system) is pressed.
-		// 	if (kbdStruct.vkCode == VK_F1){
-		// 		// F1 is pressed!
-		// 		MessageBox(NULL, "F1 is pressed!", "key pressed", MB_ICONINFORMATION);
-        //         std::cout << "F1 pressed!";
-        //         ReleaseHook();
-		// 	}
-		// }
-
-        std::cout << "Hook Triggered - Code:" << nCode << ", wParam: " << wParam << ", lParam: " << lParam << std::endl;
-        ReleaseHook();
-	}
+LRESULT CALLBACK CBTProc(int nCode, WPARAM wParam, LPARAM lParam) 
+{ 
+    CHAR szBuf[128]; 
+    CHAR szCode[128]; 
+    HDC hdc; 
+    static int c = 0; 
+    size_t cch; 
+    HRESULT hResult;
  
-	// call the next hook in the hook chain. This is necessary or your hook chain will break and the hook stops
-	return CallNextHookEx(_hook, nCode, wParam, lParam);
-}
+    if (nCode < 0)  // do not process message 
+        return CallNextHookEx(myhookdata[IDM_CBT].hhook, nCode, wParam, 
+            lParam); 
+ 
+    hdc = GetDC(gh_hwndMain); 
+	std::cout << nCode;
+    switch (nCode) 
+    { 
+        case HCBT_ACTIVATE:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_ACTIVATE");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_CLICKSKIPPED:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_CLICKSKIPPED");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_CREATEWND:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_CREATEWND");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_DESTROYWND:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_DESTROYWND");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_KEYSKIPPED:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_KEYSKIPPED");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_MINMAX:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_MINMAX");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_MOVESIZE:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_MOVESIZE");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_QS:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_QS");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_SETFOCUS:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_SETFOCUS");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        case HCBT_SYSCOMMAND:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "HCBT_SYSCOMMAND");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+ 
+        default:
+            hResult = StringCchCopy(szCode, 128/sizeof(TCHAR), "Unknown");
+                    if (FAILED(hResult))
+                    {
+                    // TODO: write error handler
+                    } 
+            break; 
+    } 
+    hResult = StringCchPrintf(szBuf, 128/sizeof(TCHAR), "CBT -  nCode: %s, tsk: %ld, %d times   ",
+        szCode, wParam, c++);
+    if (FAILED(hResult))
+    {
+    // TODO: write error handler
+    }
+    hResult = StringCchLength(szBuf, 128/sizeof(TCHAR), &cch);
+    if (FAILED(hResult))
+    {
+    // TODO: write error handler
+    } 
+    TextOut(hdc, 2, 75, szBuf, cch); 
+    ReleaseDC(gh_hwndMain, hdc); 
 
-void SetHook(){
-	// Set the hook and set it to use the callback function above
-	// WH_KEYBOARD_LL means it will set a low level keyboard hook. More information about it at MSDN.
-	// The last 2 parameters are NULL, 0 because the callback function is in the same thread and window as the
-	// function that sets and releases the hook. If you create a hack you will not need the callback function 
-	// in another place then your own code file anyway. Read more about it at MSDN.
-	if (!(_hook = SetWindowsHookExA(WH_CALLWNDPROC, HookCallback, NULL, 0))){
-		MessageBox(NULL, "Failed to install hook!", "Error", MB_ICONERROR);
-        std::cout << "Unable Hook!";
-	} else{
-        std::cout << "Hooked!";
+	UnhookWindowsHookEx(g_hHook);
+    g_hHook = nullptr;
+    
+    return CallNextHookEx(myhookdata[IDM_CBT].hhook, nCode, wParam, lParam); 
+} 
+ 
+ int main()
+{
+    // Set the CbtProc as the callback function for window activation events
+    g_hHook = SetWindowsHookEx(WH_CBT, CBTProc, NULL, GetCurrentThreadId());
+
+    if (g_hHook == NULL)
+    {
+        // Failed to set the hook
+        // Handle the error
+        return 1;
     }
 
+    // Run your application loop or perform other tasks
+    // ...
 
+    // Unhook the event when you no longer need it
+
+
+    return 0;
 }
-
-void ReleaseHook(){
-	UnhookWindowsHookEx(_hook);
-}
-

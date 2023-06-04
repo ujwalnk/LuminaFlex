@@ -22,6 +22,13 @@ FileSentinel::FileSentinel(){
 }
 
 /**
+ * Destructor: Write data to file on object destroyed
+*/
+FileSentinel::~FileSentinel(){
+	writeConfig();
+}
+
+/**
  * Read config file data into configData struct
 */
 void FileSentinel::readConfig(){
@@ -39,13 +46,20 @@ void FileSentinel::readConfig(){
 		cFile.close();
 		ofstream cFile(CONFIG_FILE_NAME);
 		
-		cFile << 0 << endl
-		      << false << endl
-			  << 5 << endl
+		cFile << 50 << endl
+		      << 0 << endl
 			  << -1 << endl
-			  << -1 << endl;
+			  << -1 << endl
+			  << false << endl;
+
+		data.delta = 50;
+		data.interval = 0;
+		data.maxLum = -1;
+		data.minLum = -1;
+		data.useGammaRamp = false;
 
 		cFile.close();
+
 	}
 
 	cFile.close();

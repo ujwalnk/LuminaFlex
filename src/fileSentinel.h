@@ -27,6 +27,7 @@
 			void writeConfig();
         public:
 			FileSentinel();
+			~FileSentinel();
 
 			int getDelta();
 			float getInterval();
